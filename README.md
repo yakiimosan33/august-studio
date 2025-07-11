@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notion 投票ミニサイト
 
-## Getting Started
+Notion データベースと連携した投票システムです。ユーザーは4つの選択肢から1つを選んで投票でき、リアルタイムで結果を確認できます。
 
-First, run the development server:
+## 機能
+
+- 4つの固定選択肢から1つを選択して投票
+- Cookie + IPアドレスによる重複投票防止
+- リアルタイムでの投票結果表示（棒グラフ/円グラフ）
+- Notion データベースとの完全連携
+
+## 技術スタック
+
+- **フロントエンド**: Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **バックエンド**: Next.js API Routes (Edge Functions)
+- **データベース**: Notion API
+- **グラフ描画**: Chart.js (react-chartjs-2)
+
+## セットアップ
+
+### 1. Notion データベースの準備
+
+1. Notion で新しいデータベースを作成
+2. 以下のプロパティを追加:
+   - `Option` (Title): 投票選択肢
+   - `Votes` (Number): 投票数
+   - `VoterIDs` (Rich Text): 投票者IDリスト
+
+3. 以下の4つのレコードを作成:
+   - 続！バイブコーディング！
+   - AIショート動画制作チーム
+   - メルマガ制作AIチーム
+   - Difyでアプリ開発
+
+### 2. Notion Integration の作成
+
+1. [Notion Developers](https://www.notion.so/my-integrations) にアクセス
+2. 新しいインテグレーションを作成
+3. インテグレーショントークンをコピー
+4. データベースにインテグレーションを接続
+
+### 3. 環境変数の設定
+
+`.env.local.example` をコピーして `.env.local` を作成:
+
+```bash
+cp .env.local.example .env.local
+```
+
+`.env.local` ファイルを編集し、以下を設定:
+
+```bash
+NOTION_TOKEN=your_notion_integration_token
+DATABASE_ID=your_notion_database_id
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+**重要**: `.env.local` ファイルは `.gitignore` に含まれており、Git にコミットされません。
+
+### 4. 依存関係のインストール
+
+```bash
+npm install
+```
+
+### 5. 開発サーバーの起動
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000 でアプリケーションにアクセスできます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API エンドポイント
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `GET /api/options` - 投票選択肢を取得
+- `POST /api/vote` - 投票を実行
+- `GET /api/results` - 投票結果を取得
 
-## Learn More
+## デプロイ
 
-To learn more about Next.js, take a look at the following resources:
+### Vercel へのデプロイ
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. [Vercel](https://vercel.com) にプロジェクトをインポート
+2. 環境変数を設定
+3. デプロイ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 環境変数
 
-## Deploy on Vercel
+本番環境では以下の環境変数を設定してください:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `NOTION_TOKEN`: Notion Integration Token
+- `DATABASE_ID`: Notion Database ID
+- `NEXT_PUBLIC_BASE_URL`: 本番環境のURL
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## セキュリティ
+
+- Notion API トークンはサーバーサイドでのみ使用
+- Cookie + IPアドレスのハッシュ化による投票者識別
+- HTTPS 必須（本番環境）
+
+## トラブルシューティング
+
+### "Missing required environment variables" エラー
+
+`.env.local` ファイルに `NOTION_TOKEN` と `DATABASE_ID` が正しく設定されているか確認してください。
+
+### 投票選択肢が表示されない
+
+1. Notion データベースに4つの選択肢が正しく登録されているか確認
+2. インテグレーションがデータベースに接続されているか確認
+
+### 投票が記録されない
+
+1. Notion API の権限設定を確認
+2. データベースの書き込み権限があるか確認
+
+## ライセンス
+
+MIT
