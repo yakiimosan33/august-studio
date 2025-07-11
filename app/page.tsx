@@ -77,10 +77,10 @@ export default function Home() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <header className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            あなたの一票を！
+            AIクリエイターズ・スタジオ 8月テーマ
           </h1>
           <p className="text-gray-600">
-            最も興味のあるチームに投票してください
+            興味のあるテーマに投票してね！あなたの1票で僕の8月が決まります！
           </p>
         </header>
 
